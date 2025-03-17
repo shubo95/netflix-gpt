@@ -1,10 +1,17 @@
 import React, { useState, useRef } from "react";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import Header from "./Header";
 import { checkValidData, checkValidSignUpData } from "../utils/validate";
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
+  const navigate = useNavigate();
 
   const name = useRef(null);
   const email = useRef(null);
@@ -24,8 +31,33 @@ const Login = () => {
       message = checkValidSignUpData(name.current.value, emailVal, passwordVal);
     }
     setErrorMsg(message);
-    if (!message) {
-      // login / sign up the user
+    if (message) return;
+    // login / sign up the user
+    if (!isSignInForm) {
+      createUserWithEmailAndPassword(auth, emailVal, passwordVal)
+        .then((userCredential) => {
+          // Signed up
+          //   const user = userCredential.user;
+          navigate("/browse");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMsg(errorCode + " " + errorMessage);
+        });
+    } else {
+      signInWithEmailAndPassword(auth, emailVal, passwordVal)
+        .then((userCredential) => {
+          // Signed in
+          //   const user = userCredential.user;
+          //   console.log("sign in", user);
+          navigate("/browse");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMsg(errorCode + " " + errorMessage);
+        });
     }
   };
   return (
@@ -67,7 +99,7 @@ const Login = () => {
           </div>
           <p className="text-white py-6 mb-6">
             <span className="opacity-70 font-normal">
-              {isSignInForm ? "New to Netflix?" : "Already registered?"}
+              {isSignInForm ? "New to Netflix? " : "Already registered? "}
             </span>
             <span
               className="cursor-pointer hover:underline font-medium"

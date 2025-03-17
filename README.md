@@ -7,6 +7,11 @@
 - Login Form
 - Sign Up Form
 - Form Validation
+- Firebase setup
+- Deploying our app to production
+- Create Sign Up User Account
+- Sign in / Sign up of user
+- Redux store setup
 
 # Features
 
