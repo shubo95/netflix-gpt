@@ -14,6 +14,7 @@
 - Redux store setup
 - Signout functionality
 - Update Profile
+- Fetch from TMDB Movies
 
 # Features
 
