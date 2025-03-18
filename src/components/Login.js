@@ -2,15 +2,19 @@ import React, { useState, useRef } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import Header from "./Header";
 import { checkValidData, checkValidSignUpData } from "../utils/validate";
 import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const name = useRef(null);
@@ -37,8 +41,27 @@ const Login = () => {
       createUserWithEmailAndPassword(auth, emailVal, passwordVal)
         .then((userCredential) => {
           // Signed up
-          //   const user = userCredential.user;
-          navigate("/browse");
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL:
+              "https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png",
+          })
+            .then(() => {
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+              navigate("/browse");
+            })
+            .catch((error) => {
+              setErrorMsg(error.message);
+            });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -49,8 +72,6 @@ const Login = () => {
       signInWithEmailAndPassword(auth, emailVal, passwordVal)
         .then((userCredential) => {
           // Signed in
-          //   const user = userCredential.user;
-          //   console.log("sign in", user);
           navigate("/browse");
         })
         .catch((error) => {

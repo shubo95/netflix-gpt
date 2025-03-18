@@ -12,6 +12,8 @@
 - Create Sign Up User Account
 - Sign in / Sign up of user
 - Redux store setup
+- Signout functionality
+- Update Profile
 
 # Features
 
