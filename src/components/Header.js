@@ -43,7 +43,7 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="absolute px-12 py-2 w-full top-0 flex items-center justify-between">
+    <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex flex-col md:flex-row justify-between">
       <img className="w-44" src={LOGO_URL} alt="logo" />
       {user && location.pathname !== "/" && (
         <div className="flex items-center gap-1">
@@ -52,7 +52,10 @@ const Header = () => {
             src={user?.photoURL}
             className="w-8 h-8 rounded-sm"
           />
-          <button onClick={handleSignOut} className="font-bold cursor-pointer">
+          <button
+            onClick={handleSignOut}
+            className="font-bold cursor-pointer text-white"
+          >
             (Sign Out)
           </button>
         </div>
