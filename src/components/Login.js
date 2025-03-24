@@ -80,7 +80,7 @@ const Login = () => {
   return (
     <div className="h-screen w-full bg-black login-container">
       <Header />
-      <div className="absolute w-[28%] mx-auto wrapper px-12 py-6 top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]">
+      <div className="absolute w-full md:w-[28%] mx-auto wrapper px-12 py-6 top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]">
         <form onSubmit={(e) => e.preventDefault()}>
           <h1 className="text-white font-bold text-[2rem] my-6">
             {isSignInForm ? "Sign In" : "Sign Up"}
