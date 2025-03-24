@@ -31,3 +31,7 @@
 - NetflixGPT
   - Search bar
   - Movie Suggestions
+
+# Deployed Url
+
+- https://netflixgpt-28511.web.app
