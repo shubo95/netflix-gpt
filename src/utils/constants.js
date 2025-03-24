@@ -8,8 +8,7 @@ export const API_OPTIONS = {
   method: "GET",
   headers: {
     accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyM2IxNTJmM2JjMzU3YWM2MTM2ZTZiOTMxOWYyMWNkNCIsIm5iZiI6MTc0MjI5NTUxMy4wNTEsInN1YiI6IjY3ZDk1MWQ5NWY1OGUzMmY3ZTA4OTNhYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.LN2KaWqLBCvjkTfAPSg528K5bIHdbbHnEXde0ljjo8g",
+    Authorization: "Bearer " + process.env.REACT_APP_TMDB_KEY,
   },
 };
 
@@ -23,5 +22,4 @@ export const SUPPORTED_LANGUAGES = [
   { identifier: "spanish", name: "Spanish" },
 ];
 
-export const OPENAI_KEY =
-  "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";
+export const GEMINI_KEY = process.env.REACT_APP_GEMINI_KEY;

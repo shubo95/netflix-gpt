@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
 import { LOGO_URL, SUPPORTED_LANGUAGES } from "../utils/constants";
 import { changeLanguage } from "../utils/configSlice";
-import { toggleGptSearchView } from "../utils/gptSlice";
+import { addGptMovieResult, toggleGptSearchView } from "../utils/gptSlice";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -52,6 +52,14 @@ const Header = () => {
   const handleGptSearchClick = () => {
     // Toggle GPT Search
     dispatch(toggleGptSearchView());
+    if (showGptSearch) {
+      dispatch(
+        addGptMovieResult({
+          movieNames: null,
+          movieResults: null,
+        })
+      );
+    }
   };
 
   return (
@@ -75,7 +83,7 @@ const Header = () => {
             className="py-2 px-4 mx-4 my-2 bg-purple-800 text-white rounded-lg"
             onClick={handleGptSearchClick}
           >
-            {showGptSearch ? "Homepage" : "GPT Search"}
+            {showGptSearch ? "Homepage" : "Gemini Search"}
           </button>
           <img
             alt="user icon"

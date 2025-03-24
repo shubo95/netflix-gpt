@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import lang from "../utils/languageConstants";
 import { API_OPTIONS } from "../utils/constants";
 import { addGptMovieResult } from "../utils/gptSlice";
-import openai from "../utils/openai";
+import model from "../utils/gemini";
 
 const GptSearchBar = () => {
   const dispatch = useDispatch();
@@ -26,31 +26,21 @@ const GptSearchBar = () => {
 
   const handleGptSearchClick = async () => {
     setIsLoading(true);
+    setError("");
     const gptQuery =
       "Act as a Movie Recommendation system and suggest some movies for the query : " +
       searchText.current.value +
       ". only give me names of 5 movies, comma seperated like the example result given ahead. Example Result: Gadar, Sholay, Don, Golmaal, Koi Mil Gaya";
 
     try {
-      const gptResults = await openai.chat.completions.create({
-        messages: [{ role: "user", content: gptQuery }],
-        model: "gpt-3.5-turbo",
-      });
-      console.log(gptResults.choices?.[0]?.message?.content);
-
-      // Andaz Apna Apna, Hera Pheri, Chupke Chupke, Jaane Bhi Do Yaaro, Padosan
-      const gptMovies = gptResults.choices?.[0]?.message?.content.split(",");
-
-      // ["Andaz Apna Apna", "Hera Pheri", "Chupke Chupke", "Jaane Bhi Do Yaaro", "Padosan"]
-
-      // For each movie I will search TMDB API
+      const gptResults = await model.generateContent(gptQuery);
+      const gptMovies = gptResults.response?.text()?.split(",");
 
       const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie));
       // [Promise, Promise, Promise, Promise, Promise]
       try {
         const tmdbResults = await Promise.all(promiseArray);
-
-        console.log(tmdbResults);
+        setIsLoading(false);
         dispatch(
           addGptMovieResult({
             movieNames: gptMovies,
